@@ -19,7 +19,7 @@ class PostIntegrationTest extends TestCase
     function test_a_get_url_attribute_is_return_correctly(){
 	    $user = $this->defaultUser();
 
-	    $post = factory(Post::class)->make([
+	    $post = $this->createPost([
 		    'title' => 'Como instalar Laravel',
 	    ]);
 
