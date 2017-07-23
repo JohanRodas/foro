@@ -1,5 +1,7 @@
 <?php
 
+use App\Post;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -19,33 +21,28 @@ class PostListTest extends FeatureTestCase
 	        ->seePageIs($post->url);
     }
 
-	public function test_a_user_can_see_the_post_list_pagination() {
-		$post1 = $this->createPost([
-			'title' => 'Este es el post 1',
+	public function test_the_post_are_paginated() {
+		$first = factory(Post::class)->create( [
+				'title' => 'Post más antiguo',
+			'created_at' => Carbon::create()->subDay(2)
 		]);
 
-		$post2 = $this->createPost([
-			'title' => 'Este es el post 2',
+		factory(Post::class)->times(15)->create([
+			'created_at' => Carbon::create()->subDay()
 		]);
 
-		$post3 = $this->createPost([
-			'title' => 'Este es el post 3',
-		]);
-
-		$post4 = $this->createPost([
-			'title' => 'Este es el post 4',
+		$last = factory(Post::class)->create( [
+				'title' => 'Post más reciente',
+				'created_at' => Carbon::now()
 		]);
 
 		$this->visit('/')
-		     ->seeInElement('h1', 'Post')
-		     ->see($post1->title)
-		     ->click($post1->title)
-		     ->seePageIs($post1->url);
+			->see($last->title)
+			->dontSee($first->title)
+			->click('2')
+			->see($first->title)
+			->dontSee($last->title);
 
-		$this->visit('/?page=2')
-		     ->seeInElement('h1', 'Post')
-		     ->see($post3->title)
-		     ->click($post3->title)
-		     ->seePageIs($post3->url);;
+
     }
 }
