@@ -26,7 +26,7 @@ class WriteCommentTest extends FeatureTestCase
 
     }
 
-	public function test_write_a_comment_requires_authentication() {    
+	public function test_write_a_comment_requires_authentication() {
 
 		$post = $this->createPost();
 
