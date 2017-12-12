@@ -8,19 +8,23 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-	public function store(Request $request, Post $post) {
+    public function store(Request $request, Post $post)
+    {
 
-		$this->validate($request, [
-			'comment' => 'required',
-		]);
-		auth()->user()->comment($post, $request->get('comment'));
+        $this->validate($request, [
+            'comment' => 'required',
+        ]);
+        auth()->user()->comment($post, $request->get('comment'));
 
-		return redirect($post->url);
+        return redirect($post->url);
     }
 
-	public function accept(Comment $comment) {
-		$comment->markAsAnswer();
+    public function accept(Comment $comment)
+    {
+	    $this->authorize('accept', $comment);
 
-		return redirect($comment->post->url);
+        $comment->markAsAnswer();
+
+        return redirect($comment->post->url);
     }
 }
