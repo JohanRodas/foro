@@ -1,7 +1,7 @@
 <?php
 
 
-class AcceptAnswerTest extends TestCase
+class AcceptAnswerTest extends FeatureTestCase
 {
 
     function test_the_post_author_can_accept_a_comment_as_the_post_answer()
