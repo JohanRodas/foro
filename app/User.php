@@ -41,6 +41,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Post::class, 'subscriptions');
     }
 
+    public function createPost(array $data)
+    {
+        $post = new Post($data);
+        $this->posts()->save($post);
+        $this->subscribeTo($post);
+
+        return $post;
+    }
+
 	public function comment(Post $post, $message) {
 		$comment = new Comment([
 			'comment' => $message,
@@ -57,6 +66,11 @@ class User extends Authenticatable
     public function subscribeTo(Post $post)
     {
         return $this->subscriptions()->attach($post);
+    }
+
+    public function unsubscribeFrom(Post $post)
+    {
+        return $this->subscriptions()->detach($post);
     }
 
 	public function owns(Model $model) {

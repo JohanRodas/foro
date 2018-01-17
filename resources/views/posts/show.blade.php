@@ -5,11 +5,19 @@
     {!! $post->safe_html_content !!}
     <p{{ $post->user->name }}></p>
 
-    @if(auth()->check() && !auth()->user()->isSubscribedTo($post))
-        {!! Form::open(['route' => ['post.subscribe', $post], 'method' => 'POST']) !!}
-            <button type="submit">Subscribirse al post</button>
-        {!! Form::close() !!}
+    @if(auth()->check())
+        @if(!auth()->user()->isSubscribedTo($post))
+            {!! Form::open(['route' => ['post.subscribe', $post], 'method' => 'POST']) !!}
+                <button type="submit">Subscribirse al post</button>
+            {!! Form::close() !!}
+        @else
+            {!! Form::open(['route' => ['post.unsubscribe', $post], 'method' => 'DELETE']) !!}
+                <button type="submit">Desuscribirse del post</button>
+            {!! Form::close() !!}
+        @endif
     @endif
+
+
 
     <h4>Comentarios</h4>
 
